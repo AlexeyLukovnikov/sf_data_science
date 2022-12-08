@@ -14,19 +14,22 @@ def random_predict(number: int = 1) -> int:
     Returns:
         int: Число попыток
     """
-    count, min_number, max_number = 0, 1, 101
+    count = 0        # счетчик попыток
+    min_number = 1   # определяем минимальное число, левую границу возможного диапазона
+    max_number = 101 # определяем максимальное число, правую границу возможного диапазона
 
     while True:
         count += 1
 
+        # прозводим "двоичный" поиск, сравнивая середину возможного диапазона с исходным числом
         predict_number = min_number + (max_number - min_number) // 2
 
         if number == predict_number:
             break  # выход из цикла если угадали
-        elif predict_number < number:
-            min_number = predict_number
+        elif number > predict_number:
+            min_number = predict_number  # "сдвигаем" левую(минимум) границу возможного диапазона, т.к. исходное число больше
         else:
-            max_number = predict_number
+            max_number = predict_number  # иначе "сдвигаем" правую(максимум) границу возможного диапазон, т.к. исходное число меньше (не равно и не больше)
     return count
 
 
