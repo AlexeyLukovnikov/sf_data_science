@@ -1,33 +1,67 @@
-select 'Ваш заказ доставит водитель ' || d.first_name || ' ' || d.last_name ||'. Его контактный номер: ' || COALESCE(d.phone, '-') msg from sql.driver d
+select a.name area, count(*) cnt from areas a join vacancies v on a.id = v.area_id group by area order by cnt desc limit 5
+select count(*) not_empty_salary from vacancies where salary_from  is not null or salary_to is not null
+select round(avg(salary_from)) avg_min_salary, round(avg(salary_to)) avg_max_salary from vacancies
+select schedule, employment, count(*)  from vacancies group by 1, 2 order by 3 desc offset 1 limit 1
+select experience, count(*) from vacancies group by 1 order by 2
 
-select c.cust_id, lower(c.cust_name) cust_name
-from sql.customer c join
-sql.shipment s on c.cust_id = s.cust_id
-group by c.cust_id, cust_name
-having count(c.cust_id) > 10
-order by c.cust_id
+(select e.name company_name, count(v.id) company_vacancies from employers e join vacancies v on e.id = v.employer_id group by 1 order by 2 desc limit 1)
+union
+(select e.name, count(v.id) cnt from employers e join vacancies v on e.id = v.employer_id group by 1 order by 2 desc offset 4 limit 1)
+order by company_vacancies desc
 
-select replace(lower(state || '__' || city_name), ' ', '_') utm from sql.city order by 1
+select a.name, count(e.id) employers_cnt, count(v.id) vacancies_cnt
+from areas a 
+join employers e on a.id = e.area
+left join vacancies v on a.id = v.area_id
+group by 1 order by  3, 2 desc 
+limit 1
 
-select left('abcde', 6), right('abcde', -1)
+select employer_id, count(salary_to), count(distinct salary_to), count(*) from vacancies group by 1
+select id, employer_id, salary_to from vacancies where employer_id = 522
 
-select left(state, 4) code, count(distinct state) qty from sql.city group by 1 having count(distinct state) > 1 order by 1 
 
-select format('Hello, %s!', d.first_name) from shipping.driver d
+select count(distinct area_id) max_cnt from vacancies group by employer_id order by 1 desc limit 1
 
-select format('driver_id = %s, first_name = %s, last_name = %s, address = %s, zip_code = %s, phone = %s, city_id = %s', driver_id, first_name, last_name, address, zip_code, phone, city_id) fio from shipping.driver d
+select count(distinct e.id), count(e.id), count(*) from employers e left join employers_industries ei on e.id = ei.employer_id where ei.employer_id is null
+select count(*) from employers
 
-select format($$%s is located in %s. There's %s people living there. Its area is %s$$, city_name, state, population, area) str from sql.city order by city_name
+select count(*) from employers where id not in (select employer_id from employers_industries)
 
-select 'select count(*) from '||t.table_schema||'.'||t.table_name||';' query
-from information_schema.tables t
-where table_schema = 'project_sql'
+select e.name, count(distinct ei.industry_id) ind_cnt
+from employers e  join employers_industries ei on e.id = ei.employer_id
+group by e.name
+having count(distinct ei.industry_id) = 4
+order by e.name
+offset 2 limit 1
 
-VACANCIES
-AREAS
-EMPLOYERS
- 
- INDUSTRIES
- EMPLOYERS_INDUSTRIES
- 
- 
+select count(distinct ei.employer_id) emp_dev_po from employers_industries ei join industries i on ei.industry_id = i.id where i.name = 'Разработка программного обеспечения'
+
+select a.name "name" from areas a
+
+(
+select a.name "name", count(*) cnt from areas a
+join vacancies v on a.id = v.area_id
+join employers e on e.id = v.employer_id
+where a.name in (
+	'Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань', 'Нижний Новгород',
+	'Челябинск', 'Красноярск', 'Самара', 'Уфа', 'Ростов-на-Дону', 
+	'Омск', 'Краснодар', 'Воронеж', 'Пермь', 'Волгоград'
+	)
+	and
+	e.name = 'Яндекс'
+group by a.name
+order by cnt 
+)
+union
+(
+select 'Total' "name", count(*) cnt from areas a
+join vacancies v on a.id = v.area_id
+join employers e on e.id = v.employer_id
+where a.name in (
+	'Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань', 'Нижний Новгород',
+	'Челябинск', 'Красноярск', 'Самара', 'Уфа', 'Ростов-на-Дону', 
+	'Омск', 'Краснодар', 'Воронеж', 'Пермь', 'Волгоград'
+	)
+	and
+	e.name = 'Яндекс'
+)
