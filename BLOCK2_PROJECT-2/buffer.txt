@@ -65,3 +65,82 @@ where a.name in (
 	and
 	e.name = 'Яндекс'
 )
+
+select count(*) ds_count from vacancies where lower(name) like '%data%' or lower(name) like '%данн%'
+
+select *  from vacancies
+
+select count(*) junior_cnt from vacancies
+where 
+(
+lower(name) like '%data scientist%' or
+lower(name) like '%data science%' or
+lower(name) like '%исследователь данных%' or
+(name like '%ML%' and name not like '%HTML%') or
+lower(name) like '%machine learning%' or
+lower(name) like '%машинн%обучен%%'
+) and (
+lower(name) like '%junior%' or
+experience = 'Нет опыта' or
+employment = 'Стажировка'
+)
+
+select count(*) ds_and_db_cnt from vacancies
+where 
+(
+lower(name) like '%data scientist%' or
+lower(name) like '%data science%' or
+lower(name) like '%исследователь данных%' or
+(name like '%ML%' and name not like '%HTML%') or
+lower(name) like '%machine learning%' or
+lower(name) like '%машинн%обучен%%'
+) and (
+upper(key_skills) like '%SQL%' or
+lower(key_skills) like '%postgres%'
+)
+
+select count(*) ds_and_python_cnt from vacancies
+where 
+(
+lower(name) like '%data scientist%' or
+lower(name) like '%data science%' or
+lower(name) like '%исследователь данных%' or
+(name like '%ML%' and name not like '%HTML%') or
+lower(name) like '%machine learning%' or
+lower(name) like '%машинн%обучен%%'
+) and (
+lower(key_skills) like '%python%'
+)
+
+select length(key_skills) from vacancies
+
+select avg(
+1 + length(key_skills) - length(replace(key_skills, chr(9), ''))  
+) ds_key_skills_cnt from vacancies
+where 
+(
+lower(name) like '%data scientist%' or
+lower(name) like '%data science%' or
+lower(name) like '%исследователь данных%' or
+(name like '%ML%' and name not like '%HTML%') or
+lower(name) like '%machine learning%' or
+lower(name) like '%машинн%обучен%%'
+) and (
+key_skills is not null
+)
+
+
+select round(avg(
+(coalesce(salary_from, salary_to) + coalesce(salary_to, salary_from)) / 2
+)) ds_avg_salary  from vacancies
+where 
+(
+lower(name) like '%data scientist%' or
+lower(name) like '%data science%' or
+lower(name) like '%исследователь данных%' or
+(name like '%ML%' and name not like '%HTML%') or
+lower(name) like '%machine learning%' or
+lower(name) like '%машинн%обучен%%'
+) and (
+experience = 'От 3 до 6 лет' and (salary_to is not null or salary_from is not null)
+)
