@@ -1,0 +1,5 @@
+DBNAME = 'db_schme'
+USER = 'user_name'
+PASSWORD = 'real_password'
+HOST = 'host'
+PORT = port
