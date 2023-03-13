@@ -1,0 +1,16 @@
+INFO: 2023-03-13 08:53:24,877: Data
+INFO: 2023-03-13 08:53:34,596: This is an informational message
+WARNING: 2023-03-13 08:53:34,597: This message is a warning
+ERROR: 2023-03-13 08:53:34,598: This is an error message
+CRITICAL: 2023-03-13 08:53:34,598: This is a critical message
+INFO: 2023-03-13 08:53:36,973: Data
+INFO: 2023-03-13 08:54:16,747: Data
+INFO: 2023-03-13 08:54:16,747: Data
+INFO: 2023-03-13 08:54:16,748: Data shape (110527, 14)
+INFO: 2023-03-13 08:54:16,748: Data shape (110527, 14)
+INFO: 2023-03-13 08:54:16,757: Percentage of women: 0.653882342398853
+INFO: 2023-03-13 08:54:16,757: Percentage of women: 0.653882342398853
+INFO: 2023-03-13 08:54:16,765: Percentage of men: 0.346117657601147
+INFO: 2023-03-13 08:54:16,765: Percentage of men: 0.346117657601147
+ERROR: 2023-03-13 08:55:20,421: Data shape is incorrect!
+ERROR: 2023-03-13 08:55:20,421: Data shape is incorrect!
